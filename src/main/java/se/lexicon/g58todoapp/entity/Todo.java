@@ -31,11 +31,18 @@ public class Todo {
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
+
+    // TODO: make sure to create/update this info. AUDITING? - Life Cycle methods
     private LocalDateTime updatedAt;
     private LocalDateTime dueDate;
 
     @ManyToOne
     private Person assignedTo;
+
+    //TODO ATTACHMENT
+
+
+    // TODO Add one more Constructor, Title, description
 
     public Todo(String title, String description, LocalDateTime dueDate) {
         this.title = title;
@@ -56,4 +63,6 @@ public class Todo {
         this.dueDate = dueDate;
         this.assignedTo = assignedTo;
     }
+
+    // TODO : Equals & Hashcode
 }

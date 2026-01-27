@@ -37,4 +37,7 @@ public class Person {
 
     @Column(nullable = false, updatable = false)
     private LocalDate createdAt;
+
+    // TODO : Equals & Hashcode
+    // TODO : Life Cycle for createdAt;
 }
