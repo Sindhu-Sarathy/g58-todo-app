@@ -56,6 +56,7 @@ public class Todo {
     private Person assignedTo;
 
     //TODO ATTACHMENT
+    @OneToMany
     Set<Attachment> attachmentSet;
 
     // TODO Add one more Constructor, Title, description
