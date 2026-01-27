@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
 
 @Getter
@@ -12,6 +13,7 @@ import java.time.LocalDate;
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @RequiredArgsConstructor
 @ToString
+
 
 @Entity
 @Table(name = "people")
@@ -39,5 +41,26 @@ public class Person {
     private LocalDate createdAt;
 
     // TODO : Equals & Hashcode
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Person person = (Person) o;
+        return Objects.equals(id, person.id) && Objects.equals(name, person.name) && Objects.equals(email, person.email) && Objects.equals(birthDate, person.birthDate) && Objects.equals(createdAt, person.createdAt);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, email, birthDate, createdAt);
+    }
+
+
     // TODO : Life Cycle for createdAt;
+    @PrePersist
+    public void prePersist(){
+        System.out.println("Before Persist:");
+        System.out.println(this);
+
+        this.createdAt=LocalDate.now();
+    }
 }
