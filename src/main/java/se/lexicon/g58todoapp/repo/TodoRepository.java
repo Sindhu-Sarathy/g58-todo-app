@@ -12,7 +12,7 @@ public interface TodoRepository extends JpaRepository<Todo, Long> {
     
     // TODO : Tasks assigned to a specific Person
 
-    List<Todo> findTodoByAssignedTo(Person assignedTo);
+    List<Todo> findTodosByAssignedTo_Id(Long assignedToId);
 
 
     // TODO : 📌 Count all tasks assigned to a person
@@ -25,7 +25,7 @@ public interface TodoRepository extends JpaRepository<Todo, Long> {
     
     // TODO : 🔍 Find todos by title keyword (case-insensitive contains)
 
-    List<Todo> findTodosByTitleContainsIgnoreCase(String title);
+    List<Todo> findByTitleContainingIgnoreCase(String title);
 
 
     // TODO : ✅ Find todos by completed status
@@ -46,7 +46,7 @@ public interface TodoRepository extends JpaRepository<Todo, Long> {
     
     // TODO : Find tasks that are not assigned to anyone
 
-    List<Todo> findTodosByAssignedToIsNull(Person assignedTo);
+    List<Todo> findByAssignedToIsNull();
 
     // TODO : 📅 Find all with no due date
     

@@ -7,6 +7,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
@@ -37,29 +38,40 @@ public class Todo {
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
-
-    // TODO: make sure to create/update this info. AUDITING? - Life Cycle methods
-    @LastModifiedDate
-    @Column(nullable = false)
     private LocalDateTime updatedAt;
 
     private LocalDateTime dueDate;
 
-    @PrePersist
-    public void prePersist(){
-        System.out.println("Before Persist:");
-        System.out.println(this);
-        this.dueDate= LocalDateTime.now().plusDays(7);
-    }
-
     @ManyToOne
     private Person assignedTo;
 
-    //TODO ATTACHMENT
-    @OneToMany
-    Set<Attachment> attachmentSet;
+    @OneToMany(mappedBy = "todo",cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true )
+    Set<Attachment> attachmentSet = new HashSet<>();
 
-    // TODO Add one more Constructor, Title, description
+    @PrePersist
+    protected void onCreate(){
+        this.createdAt = LocalDateTime.now();
+    }
+
+    @PreUpdate
+    protected void onUpdate(){
+        this.updatedAt=LocalDateTime.now();
+    }
+
+    public void addAttachment(Attachment attachment){
+        if(attachmentSet==null){
+            attachmentSet=new HashSet<>();
+        }
+
+        attachmentSet.add(attachment);
+        attachment.setTodo(this);
+
+    }
+
+    public void removeAttachment(Attachment attachment){
+        attachmentSet.remove(attachment);
+        attachment.setTodo(null);
+    }
 
     public Todo(String title, String description, LocalDateTime dueDate) {
         this.title = title;

@@ -64,4 +64,9 @@ public class Person {
 
         this.createdAt=LocalDate.now();
     }
+
+    public Person(@NonNull String name, @NonNull String email) {
+        this.name = name;
+        this.email = email;
+    }
 }

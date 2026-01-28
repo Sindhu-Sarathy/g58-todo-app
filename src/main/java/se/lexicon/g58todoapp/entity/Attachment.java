@@ -4,11 +4,9 @@ package se.lexicon.g58todoapp.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
-// TODO IMPLEMENT
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor(access = AccessLevel.PROTECTED)
-@RequiredArgsConstructor
+@NoArgsConstructor
+@AllArgsConstructor
 @ToString
 
 @Entity
@@ -22,8 +20,30 @@ public class Attachment {
     @Column(length = 255)
     private String fileName;
 
-    @ManyToOne
+    private String fileType;
+
+    @Lob
+    //1KB=1024 bytes
+    //1MB=1024*1024 = 1048576 bytes
+    private byte[] data;
+
+    @Setter(AccessLevel.NONE)
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "todo_id", nullable = false)
     private Todo todo;
 
+    public Attachment(String fileName, String fileType, byte[] data) {
+        this.fileName = fileName;
+        this.fileType = fileType;
+        this.data = data;
 
+    }
+
+    //Bidirectional way
+    public void setTodo(Todo todo){
+        this.todo=todo;
+        if(todo!=null) {
+            todo.getAttachmentSet().add(this);
+        }
+    }
 }
