@@ -3,9 +3,12 @@ package se.lexicon.g58todoapp.service;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import se.lexicon.g58todoapp.entity.Person;
+import se.lexicon.g58todoapp.exception.PersonNotFoundException;
 import se.lexicon.g58todoapp.repo.PersonRepository;
 import se.lexicon.notify.model.Email;
 import se.lexicon.notify.service.MessageService;
+
+import java.util.List;
 
 @Slf4j
 @Service
@@ -44,5 +47,36 @@ public class PersonService {
         }
     }
 
+    public List<Person> findAll(){
+        return personRepository.findAll();
+    }
 
+    public Person findById(Long id){
+        return personRepository.findById(id).orElseThrow(()-> new PersonNotFoundException("Person Not Found"));
+    }
+
+
+    public Person updatePerson(Long id, Person person){
+        Person existing=personRepository.findById(id).orElseThrow(()-> new PersonNotFoundException("Person Not Found"));
+
+        existing.setName(person.getName());
+        existing.setEmail(person.getEmail());
+        existing.setBirthDate(person.getBirthDate());
+        return personRepository.save(existing);
+    }
+
+
+    public void deleteById(Long id){
+        personRepository.deleteById(id);
+    }
+
+
+
+    public List<Person> findByEmail(String email){
+        return personRepository.findPersonByEmail(email);
+    }
+
+    public boolean existsEmail(String email){
+       return personRepository.existsByEmail(email);
+    }
 }

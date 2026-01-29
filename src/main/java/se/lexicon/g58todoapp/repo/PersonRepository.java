@@ -9,11 +9,12 @@ public interface PersonRepository extends JpaRepository<Person, Long> {
 
 
 
-    // TODO: Find person with a email
+
     List<Person> findPersonByEmail(String email);
 
-    // TODO: Is there a person with a specific email? - return boolean
+
     boolean existsByEmail(String email);
+
 
 
 }
