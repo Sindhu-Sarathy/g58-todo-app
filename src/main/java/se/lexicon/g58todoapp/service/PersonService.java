@@ -9,6 +9,7 @@ import se.lexicon.notify.model.Email;
 import se.lexicon.notify.service.MessageService;
 
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -72,7 +73,7 @@ public class PersonService {
 
 
 
-    public List<Person> findByEmail(String email){
+    public Optional<Person> findByEmail(String email){
         return personRepository.findPersonByEmail(email);
     }
 
