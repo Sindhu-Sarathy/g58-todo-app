@@ -8,48 +8,47 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public interface TodoRepository extends JpaRepository<Todo, Long> {
-    
-    
-    // TODO : Tasks assigned to a specific Person
-
-    List<Todo> findTodosByAssignedTo_Id(Long assignedToId);
 
 
-    // TODO : 📌 Count all tasks assigned to a person
-
-    long countByAssignedTo(Person assignedTo);
-
-    // TODO : ✅ Find completed tasks assigned to a specific person
-    
-    List<Todo> findByCompletedAndAssignedTo(Boolean completed, Person assignedTo);
-    
-    // TODO : 🔍 Find todos by title keyword (case-insensitive contains)
-
+    // 🔍 Find todos by title keyword (case-insensitive contains)
     List<Todo> findByTitleContainingIgnoreCase(String title);
+    // SELECT * FROM todos WHERE LOWER(title) LIKE LOWER(CONCAT('%', :title, '%'));
 
+    // 👤 Find todos by person ID
+    List<Todo> findByAssignedTo_Id(Long personId);
+    // SELECT * FROM todos WHERE person_id = :personId;
 
-    // TODO : ✅ Find todos by completed status
+    // ✅ Find todos by completed status
+    List<Todo> findByCompleted(boolean completed);
+    // SELECT * FROM todos WHERE completed = :completed;
 
-    List<Todo> findTodosByCompleted(Boolean completed);
+    // 🗓️ Find todos between two due dates
+    List<Todo> findByDueDateBetween(LocalDateTime start, LocalDateTime end);
+    // SELECT * FROM todos WHERE due_date BETWEEN :start AND :end;
+    // select * from todos where due_date >= :start and due_date <= :end;
 
-    // TODO : 🗓️ Find todos between two due dates
+    // 🗓️ Find todos due before a specific date and not completed
+    List<Todo> findByDueDateBeforeAndCompletedFalse(LocalDateTime dateTime);
+    // select * from todos where due_date < :dateTime and completed = false;
 
-    List<Todo> findTodosByDueDateBetween(LocalDateTime dueDateAfter, LocalDateTime dueDateBefore);
-
-    // TODO :️ Find todo due before a specific date and not completed
-
-    List<Todo> findTodosByDueDateBeforeAndCompletedNot(LocalDateTime dueDateBefore, Boolean completed);
-
-    // TODO :🔥 Find unfinished and overdue task
-
-    List<Todo> findTodosByCompletedNotAndDueDateBefore(Boolean completed, LocalDateTime dueDateBefore);
-    
-    // TODO : Find tasks that are not assigned to anyone
-
+    // ❌ Find unassigned todos (person is null)
     List<Todo> findByAssignedToIsNull();
+    // select * from todos where person_id is null;
 
-    // TODO : 📅 Find all with no due date
-    
-    List<Todo> findAllByDueDateIsNull();
+    // 🔥 Find unfinished and overdue tasks (custom query)
+    List<Todo> findByCompletedFalseAndDueDateBefore(LocalDateTime dateTime);
+    // select * from todos where completed = false and due_date < :dateTime;
+
+    // ✅ Find completed tasks assigned to a specific person
+    List<Todo> findByAssignedTo_IdAndCompletedTrue(Long personId);
+    // select * from todos where person_id = :personId and completed = true;
+
+    // 📅 Find all with no due date
+    List<Todo> findByDueDateIsNull();
+    // select * from todos where due_date is null;
+
+    // 📌 Count all tasks assigned to a person
+    long countByAssignedTo_Id(Long personId);
+    // select count(*) from todos where person_id = :personId;
     
 }

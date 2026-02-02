@@ -98,6 +98,14 @@ public class Todo {
         this.description = description;
     }
 
+    public Todo(String title, String description, Boolean completed, LocalDateTime dueDate, Person assignedTo) {
+        this.title = title;
+        this.description = description;
+        this.completed = completed;
+        this.dueDate = dueDate;
+        this.assignedTo = assignedTo;
+    }
+
     // TODO : Equals & Hashcode
     @Override
     public boolean equals(Object o) {
