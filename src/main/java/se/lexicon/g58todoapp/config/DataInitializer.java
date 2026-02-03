@@ -24,7 +24,7 @@ public class DataInitializer {
     @Bean
     CommandLineRunner run(PersonRepository personRepository, TodoRepository todoRepository, AttachmentRepository attachmentRepository,PersonService personService){
     return args -> {
-        //seedingData(personRepository,todoRepository,attachmentRepository);
+         seedingData(personRepository,todoRepository,attachmentRepository);
         //registerPerson(personService);
         };
     }
